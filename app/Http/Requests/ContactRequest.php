@@ -23,11 +23,35 @@ class ContactRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        // return [
             
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'email' => $this->method('PUT') ?  'required|unique:contacts,email,' . $this->segment(3) :'required|unique:contacts,email'
-        ];
+        // 'first_name' => 'required',
+        // 'last_name' => 'required',
+        // 'email' => $this->method('PUT') ?  'required|unique:contacts,email,' . $this->segment(3) :'required|unique:contacts,email'
+        // ];
+        // $contact = Contact::find($this->contacts);
+
+    switch($this->method())
+    {
+        case 'POST':
+        {
+            return [
+              'first_name' => 'required',
+        		'last_name' => 'required',
+                'email'      => 'required|email|unique:contacts,email',
+                
+            ];
+        }
+        case 'PUT':
+        {
+            return [
+				'first_name' => 'required',
+				'last_name' => 'required',
+				'email'   => 'required|email|unique:contacts,email,'. $this->segment(3),
+              
+            ];
+        }
+        default:break;
+    }
     }
 }
