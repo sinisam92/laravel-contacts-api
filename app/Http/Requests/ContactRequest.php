@@ -27,9 +27,7 @@ class ContactRequest extends FormRequest
             
         'first_name' => 'required',
         'last_name' => 'required',
-        'email' => 'required|unique:contacts,email'
-        
-            
+        'email' => $this->method('PUT') ?  'required|unique:contacts,email,' . $this->segment(3) :'required|unique:contacts,email'
         ];
     }
 }
