@@ -31,27 +31,40 @@ class ContactRequest extends FormRequest
         // ];
         // $contact = Contact::find($this->contacts);
 
-    switch($this->method())
-    {
-        case 'POST':
-        {
+        // dd($this->route()->parameters['contact']->id) ovako smo nasli id rute !!
+        $contactId = $this->method() == "PUT"
+            ? $this->route()->parameters['contact']->id
+            : null;
+
+
             return [
-              'first_name' => 'required',
-        		'last_name' => 'required',
-                'email'      => 'required|email|unique:contacts,email',
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email'      => 'required|email|unique:contacts,email' . 
+                  ($contactId ? ",$contactId" : '')
+                  
+              ];
+    // switch($this->method())
+    // {
+    //     case 'POST':
+    //     {
+    //         return [
+    //           'first_name' => 'required',
+    //     		'last_name' => 'required',
+    //             'email'      => 'required|email|unique:contacts,email',
                 
-            ];
-        }
-        case 'PUT':
-        {
-            return [
-				'first_name' => 'required',
-				'last_name' => 'required',
-				'email'   => 'required|email|unique:contacts,email,'. $this->segment(3),
+    //         ];
+    //     }
+    //     case 'PUT':
+    //     {
+    //         return [
+	// 			'first_name' => 'required',
+	// 			'last_name' => 'required',
+	// 			'email'   => 'required|email|unique:contacts,email,'. $this->segment(3),
               
-            ];
-        }
-        default:break;
-    }
+    //         ];
+    //     }
+    //     default:break;
+    // }
     }
 }
